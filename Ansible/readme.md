@@ -38,6 +38,7 @@ ansible-galaxy init nginx
 ![image](https://user-images.githubusercontent.com/49572117/116907482-4def0700-ac4a-11eb-92bd-e0a081bc178c.png)
 
 
+# Test command using shell
 ansible testgroup -i hosts.txt -m shell -a "uptime"
 
 - m module
