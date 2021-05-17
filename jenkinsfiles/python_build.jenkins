@@ -37,5 +37,16 @@ pipeline {
                 '''
             }
         }
+        stage("create backup in remote server"){
+            steps{
+                build job:'backup'
+            }
+        }
+        stage("run docker container in remote server")
+        {
+            steps{
+                build job: 'docker_remote_server_run_master'
+            }
+        }
     }
 }
