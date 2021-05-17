@@ -1,0 +1,16 @@
+---
+# tasks file for java
+- name: Update repos
+  apt: 
+    name: "*"
+    state: latest
+- name: Installing OpenJDK
+  apt:
+    name: openjdk-8-jdk
+    update_cache: yes
+
+- name: Setting default java
+  alternatives: 
+    name: java
+    link: /usr/bin/java
+    path: /usr/lib/jvm/java-8-openjdk-amd64/bin/java

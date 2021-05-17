@@ -1,0 +1,14 @@
+---
+- name: For client02
+  hosts: client02
+  become: yes
+  
+  roles:
+     - java
+     - nginx
+- name: For cliect01
+  hosts: client01
+  become: yes
+  
+  roles:
+     - nginx
