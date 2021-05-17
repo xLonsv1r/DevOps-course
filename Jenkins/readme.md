@@ -59,6 +59,8 @@
 
     o	Задача по сборке должна запускаться с параметрами.
     
+    ![image](https://user-images.githubusercontent.com/49572117/118539048-9da7f500-b757-11eb-8067-adb6e47017d1.png)
+
     o	Результатом сборки обязательно должен быть артифакт (архив, docker-контейнер), который вы дальше будете использовать.
 
     https://hub.docker.com/repository/docker/xlonsv1r/python_docker
@@ -108,3 +110,9 @@
 11.	Настроить зависимость задачи деплоя от задачи сборки.
 
 12.	Настроить автоматический запуск деплоя при подтверждении pull request’а в ветке “master” в git.
+
+
+
+![image](https://user-images.githubusercontent.com/49572117/118538889-6c2f2980-b757-11eb-8fa6-25ace9369dd7.png)
+
+![image](https://user-images.githubusercontent.com/49572117/118538996-8f59d900-b757-11eb-8ea2-9303bbd86a1c.png)
