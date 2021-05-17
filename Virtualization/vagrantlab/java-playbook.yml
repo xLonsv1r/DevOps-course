@@ -1,0 +1,30 @@
+---
+ - name: Install Java
+   hosts: client02
+   tasks:
+    - name: Update repos
+      apt: 
+        name: "*"
+        state: latest
+    - name: Installing OpenJDK
+      apt:
+        name: openjdk-8-jdk
+        update_cache: yes
+    - name: Setting default java
+      alternatives: 
+        name: java
+        link: /usr/bin/java
+        path: /usr/lib/jvm/java-8-openjdk-amd64/bin/java
+    - name: Download tomcat
+      get_url:
+        url: "https://mirror.dsrg.utoronto.ca/apache/tomcat/tomcat-8/v8.5.66/bin/apache-tomcat-8.5.66.tar.gz"
+        dest: /usr/local
+    - name: Extracting tomcat
+      unarchive:
+        src: "/usr/local/apache-tomcat-8.5.66.tar.gz"
+        dest: /usr/local
+        remote_src: yes
+    - name: Renaming tomcat home
+      command: mv /usr/local/apache-tomcat-8.5.66 /usr/local/tomcat
+    - name: Starting tomcat 
+      shell: nohup /usr/local/tomcat/bin/startup.sh &

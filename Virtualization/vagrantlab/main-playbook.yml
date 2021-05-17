@@ -1,0 +1,54 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: install add-apt-repo
+      apt: name=software-properties-common state=latest
+
+    - name: Update repos
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Add Oracle Java Repo
+      apt_repository: repo='ppa:webupd8team/java'
+
+    - name: Installing OpenJRE
+      apt:
+        name: default-jre
+        update_cache: yes
+    - name: Install JDK
+      apt:
+        name: default-jdk
+        update_cache: yes
+
+    - name: Download tomcat
+      get_url:
+        url: "https://mirror.dsrg.utoronto.ca/apache/tomcat/tomcat-8/v8.5.66/bin/apache-tomcat-8.5.66.tar.gz"
+        dest: /usr/local
+
+    - name: Extracting tomcat
+      unarchive:
+        src: "/usr/local/apache-tomcat-8.5.66.tar.gz"
+        dest: /usr/local
+        remote_src: yes
+
+    - name: Renaming tomcat home
+      command: mv /usr/local/apache-tomcat-8.5.66 /usr/local/tomcat
+
+    - name: Starting tomcat
+      shell: nohup /usr/local/tomcat/bin/startup.sh &
+
+    - name: ensure nginx is at the latest version
+      apt: name=nginx state=latest
+
+    - name: start nginx
+      service:
+          name: nginx
+          state: started
+    - name: install mysql
+      apt:
+        name: mysql-server
+        state: latest
