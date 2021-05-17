@@ -78,6 +78,103 @@
     }]
     }
 
+# Vagrant 
+
+    # -*- mode: ruby -*-
+    # vi: set ft=ruby :
+
+    Vagrant.configure("2") do |config|
+    config.vm.box = "ubuntu/trusty64"
+    config.vm.network "public_network"
+    config.vm.network "forwarded_port", guest: 22, host: 22022
+    config.vm.network "forwarded_port", guest: 80, host: 22080
+    config.vm.network "forwarded_port", guest: 443, host: 22443
+    config.vm.network "forwarded_port", guest: 22306, host: 3306
+
+    config.ssh.insert_key = false
+
+    config.vm.provider :virtualbox do |vb|
+        vb.gui = true
+    end
+
+
+    # Provisioning configuration for Ansible.
+    config.vm.provision "ansible" do |ansible|
+        ansible.playbook = "playbook.yml"
+    end
+    end
+
+
+# main-playbook.yml(Java,Tomcat,Nginx,MySQL)
+
+    ---
+    - hosts: all
+    become: yes
+    tasks:
+        - name: install add-apt-repo
+        apt: name=software-properties-common state=latest
+
+        - name: Update repos
+        apt:
+            name: "*"
+            state: latest
+            update_cache: yes
+            cache_valid_time: 3600
+
+        - name: Add Oracle Java Repo
+        apt_repository: repo='ppa:webupd8team/java'
+
+        - name: Installing OpenJRE
+        apt:
+            name: default-jre
+            update_cache: yes
+        - name: Install JDK
+        apt:
+            name: default-jdk
+            update_cache: yes
+
+        - name: Download tomcat
+        get_url:
+            url: "https://mirror.dsrg.utoronto.ca/apache/tomcat/tomcat-8/v8.5.66/bin/apache-tomcat-8.5.66.tar.gz"
+            dest: /usr/local
+
+        - name: Extracting tomcat
+        unarchive:
+            src: "/usr/local/apache-tomcat-8.5.66.tar.gz"
+            dest: /usr/local
+            remote_src: yes
+
+        - name: Renaming tomcat home
+        command: mv /usr/local/apache-tomcat-8.5.66 /usr/local/tomcat
+
+        - name: Starting tomcat
+        shell: nohup /usr/local/tomcat/bin/startup.sh &
+
+        - name: ensure nginx is at the latest version
+        apt: name=nginx state=latest
+
+        - name: start nginx
+        service:
+            name: nginx
+            state: started
+        - name: install mysql
+        apt:
+            name: mysql-server
+            state: latest
+
+
+![image](https://user-images.githubusercontent.com/49572117/118500814-c8cb1e00-b730-11eb-8e43-3a12b4c136a8.png)
+
+![image](https://user-images.githubusercontent.com/49572117/118500397-6b36d180-b730-11eb-8876-f7b091af2eee.png)
+
+![image](https://user-images.githubusercontent.com/49572117/118500976-f1531800-b730-11eb-8a18-94f28124052e.png)
+![image](https://user-images.githubusercontent.com/49572117/118501100-0f207d00-b731-11eb-94e6-8fbcbb1d70ad.png)
+![image](https://user-images.githubusercontent.com/49572117/118501840-cb7a4300-b731-11eb-92a6-6c6941c62b9e.png)
+
+
+**vagrant halt - stop machine**
+
+**vagrant destroy - destroy machine**
 # Docker
 
 ## 1.6 Work with Docker
