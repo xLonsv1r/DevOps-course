@@ -21,4 +21,5 @@ https://docs.microsoft.com/en-us/azure/virtual-network/tutorial-filter-network-t
 
 https://www.youtube.com/watch?v=z7ZA0s398oE
 
-5.	Вам нужно создать веб-приложение с именем WabApp01, которое можно горизонтально скалировать. Решение должно использовать самый низкий возможный ценовой уровень app Service Plan.
+5.	Вам нужно создать веб-приложение с именем WebApp01, которое можно горизонтально скалировать. Решение должно использовать самый низкий возможный ценовой уровень app Service Plan.
+![image](https://user-images.githubusercontent.com/49572117/118476311-01a9c980-b716-11eb-8782-1c75c9470545.png)
